@@ -4,6 +4,7 @@ const mongoose = require("mongoose")
 const exphbs = require("express-handlebars");
 const Record = require('./models/record')
 const bodyParser = require("body-parser")
+const methodOverride = require('method-override')
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -32,6 +33,8 @@ app.engine("hbs", exphbs({ defaultLayout: "main", extname: ".hbs" }));
 app.set("view engine", "hbs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(methodOverride("_method"));
 
 // 設定首頁路由
 app.get("/", (req, res) => {
@@ -64,7 +67,7 @@ app.get("/records/:id/edit", (req, res) => {
 });
 
 //接住資料送往資料庫
-app.post("/records/:id/edit", (req, res) => {
+app.put("/records/:id", (req, res) => {
   const recordId = req.params.id;
   console.log(req.body)
   Record.findByIdAndUpdate(recordId, req.body)
@@ -73,7 +76,7 @@ app.post("/records/:id/edit", (req, res) => {
 });
 
 //刪除
-app.post("/records/:id/delete", (req, res) => {
+app.delete("/records/:id", (req, res) => {
   const id = req.params.id;
   return Record.findById(id)
     .then((record) => record.remove())

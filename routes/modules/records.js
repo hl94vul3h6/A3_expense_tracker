@@ -26,7 +26,6 @@ router.get("/:id/edit", (req, res) => {
 //接住資料送往資料庫
 router.put("/:id", (req, res) => {
   const recordId = req.params.id;
-  console.log(req.body)
   Record.findByIdAndUpdate(recordId, req.body)
     .then(() => res.redirect(`/`))
     .catch((err) => console.log(err));

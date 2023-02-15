@@ -1,5 +1,6 @@
 // 載入 express 並建構應用程式伺服器
 const express = require("express");
+const session = require("express-session");
 const exphbs = require("express-handlebars");
 const Record = require('./models/record')
 const bodyParser = require("body-parser")
@@ -17,6 +18,14 @@ const app = express();
 
 app.engine("hbs", exphbs({ defaultLayout: "main", extname: ".hbs" }));
 app.set("view engine", "hbs");
+
+app.use(
+  session({
+    secret: "ThisIsMySecret",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 

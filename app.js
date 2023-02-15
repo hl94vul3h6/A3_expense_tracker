@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose")
 const exphbs = require("express-handlebars");
 const Record = require('./models/record')
+const bodyParser = require("body-parser")
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -30,12 +31,26 @@ db.once('open', () => {
 app.engine("hbs", exphbs({ defaultLayout: "main", extname: ".hbs" }));
 app.set("view engine", "hbs");
 
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // 設定首頁路由
 app.get("/", (req, res) => {
   Record.find() 
     .lean() 
     .then((records) => res.render("index", { records })) 
     .catch((error) => console.error(error)); 
+});
+
+//拿New樣板
+app.get("/records/new", (req, res) => {
+  return res.render("new");
+});
+
+//接住表單資料 Create
+app.post("/records", (req, res) => {
+  Record.create(req.body) //存入資料庫
+    .then(() => res.redirect("/"))
+    .catch((error) => console.log(error))
 });
 
 // 設定 port 3000

@@ -35,9 +35,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // 設定首頁路由
 app.get("/", (req, res) => {
-  Record.find() 
-    .lean() 
-    .then((records) => res.render("index", { records })) 
+  Record.find()
+    .lean()
+    .sort({ _id: "asc" })
+    .then((records) => res.render("index", { records }))
     .catch((error) => console.error(error)); 
 });
 

@@ -53,6 +53,24 @@ app.post("/records", (req, res) => {
     .catch((error) => console.log(error))
 });
 
+//編輯資料
+app.get("/records/:id/edit", (req, res) => {
+  const id = req.params.id;
+  return Record.findById(id)
+    .lean()
+    .then((record) => res.render("edit", { record }))
+    .catch((error) => console.log(error));
+});
+
+//接住資料送往資料庫
+app.post("/records/:id/edit", (req, res) => {
+  const recordId = req.params.id;
+  console.log(req.body)
+  Record.findByIdAndUpdate(recordId, req.body)
+    .then(() => res.redirect(`/`))
+    .catch((err) => console.log(err));
+});
+
 // 設定 port 3000
 app.listen(3000, () => {
   console.log("App is running on http://localhost:3000");

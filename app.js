@@ -10,7 +10,7 @@ const methodOverride = require('method-override')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
+const routes = require("./routes");
 const app = express();
 
 mongoose.connect(process.env.MONGODB_URI, {
@@ -36,53 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(methodOverride("_method"));
 
-// 設定首頁路由
-app.get("/", (req, res) => {
-  Record.find()
-    .lean()
-    .sort({ _id: "asc" })
-    .then((records) => res.render("index", { records }))
-    .catch((error) => console.error(error)); 
-});
-
-//拿New樣板
-app.get("/records/new", (req, res) => {
-  return res.render("new");
-});
-
-//接住表單資料 Create
-app.post("/records", (req, res) => {
-  Record.create(req.body) //存入資料庫
-    .then(() => res.redirect("/"))
-    .catch((error) => console.log(error))
-});
-
-//編輯資料
-app.get("/records/:id/edit", (req, res) => {
-  const id = req.params.id;
-  return Record.findById(id)
-    .lean()
-    .then((record) => res.render("edit", { record }))
-    .catch((error) => console.log(error));
-});
-
-//接住資料送往資料庫
-app.put("/records/:id", (req, res) => {
-  const recordId = req.params.id;
-  console.log(req.body)
-  Record.findByIdAndUpdate(recordId, req.body)
-    .then(() => res.redirect(`/`))
-    .catch((err) => console.log(err));
-});
-
-//刪除
-app.delete("/records/:id", (req, res) => {
-  const id = req.params.id;
-  return Record.findById(id)
-    .then((record) => record.remove())
-    .then(() => res.redirect("/"))
-    .catch((error) => console.log(error));
-});
+app.use(routes)
 
 // 設定 port 3000
 app.listen(3000, () => {

@@ -2,6 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose")
 const exphbs = require("express-handlebars");
+const Record = require('./models/record')
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -31,7 +32,10 @@ app.set("view engine", "hbs");
 
 // 設定首頁路由
 app.get("/", (req, res) => {
-  res.render('index')
+  Record.find() 
+    .lean() 
+    .then((records) => res.render("index", { records })) 
+    .catch((error) => console.error(error)); 
 });
 
 // 設定 port 3000

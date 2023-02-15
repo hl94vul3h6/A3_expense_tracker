@@ -1,1 +1,40 @@
-<h2>Hello world! 這是 index</h2>
+<form action="/search" method="GET">
+  <select type="submit" class=" form-select" id="categorySearch" name="categoryId" onchange="this.form.submit()">
+    <option value="0">類別</option>
+    <option value="1">家居物業</option>
+    <option value="2">交通出行</option>
+    <option value="3">休閒娛樂</option>
+    <option value="4">餐飲食品</option>
+    <option value="5">其他</option>
+  </select>
+</form>
+<div class="text-center">
+  <h1>總金額:</h1>
+</div>
+<ul class="list-group">
+  {{#each records}}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    {{!-- 支出 --}}
+    <div class="d-flex justify-content-between align-items-center flex-grow-1 ms-3 me-5">
+      {{!-- 名稱 --}}
+      <div class="d-flex justify-content-start align-items-center">
+        <div>
+          {{!-- 圖示not finished --}}
+        </div>
+        <div class="px-3 ">
+          <h5>{{this.name}}</h5>
+          <span class="fs-6 fw-lighter">{{this.date}}</span>
+        </div>
+      </div>
+      {{!-- 金額 --}}
+      <div>
+        <span>{{this.amount}}</span>
+      </div>
+    </div>
+  </li>
+  {{/each}}
+</ul>
+<br>
+<div class="text-center">
+  <a href="/records/new" class="btn btn-primary mb-3">新增支出</a>
+</div>

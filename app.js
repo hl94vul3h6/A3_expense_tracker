@@ -24,7 +24,7 @@ app.set("view engine", "hbs");
 
 app.use(
   session({
-    secret: "ThisIsMySecret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })
@@ -50,6 +50,6 @@ app.use((req, res, next) => {
 app.use(routes)
 
 // 設定 port 3000
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("App is running on http://localhost:3000");
 });

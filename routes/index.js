@@ -7,12 +7,14 @@ const router = express.Router();
 const home = require('./modules/home')
 const records = require("./modules/records");
 const users = require('./modules/users')
+const auth = require("./modules/auth");
 const { authenticator } = require('../middleware/auth') 
 
 
 // 將網址結構符合 / 字串的 request 導向 home 模組 
 router.use("/records", authenticator, records);
 router.use("/users", users)
+router.use("/auth", auth);
 router.use("/", authenticator, home);
 // 匯出路由器
 module.exports = router;

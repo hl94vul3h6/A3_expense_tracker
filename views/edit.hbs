@@ -21,14 +21,10 @@
         <label for="category" class="fw-bold">類別*</label>
       </div>
       <div class="col-6">
-        <select type="text" class="form-control" id="category" placeholder="Select" list="categoryOptions"
-          name="categoryId" required />
-        <option value="">Select</option>
-        <option value="1">家居物業</option>
-        <option value="2">交通出行</option>
-        <option value="3">休閒娛樂</option>
-        <option value="4">餐飲食品</option>
-        <option value="5">其他</option>
+        <select type="text" class="form-control" id="category" placeholder="Select" list="categoryOptions" name="categoryId" value="{{record.category}}"required />
+        {{#each categories}}
+        <option value="{{this.category}}">{{this.categoryName}}</option>
+        {{/each}}
         </select>
       </div>
     </div>

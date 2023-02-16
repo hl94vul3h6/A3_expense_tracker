@@ -1,11 +1,12 @@
 <form action="/search" method="GET">
   <select type="submit" class=" form-select" id="categorySearch" name="categoryId" onchange="this.form.submit()">
-    <option value="0">類別</option>
-    <option value="1">家居物業</option>
-    <option value="2">交通出行</option>
-    <option value="3">休閒娛樂</option>
-    <option value="4">餐飲食品</option>
-    <option value="5">其他</option>
+    {{#if currentCategoryName}}<option>{{currentCategoryName}}</option>{{/if}}
+    <option value="">類別</option>
+    {{#each categories}}
+    <option value="{{this._id}}">
+      {{this.categoryName}}
+    </option>
+    {{/each}}
   </select>
 </form>
 <div class="text-center">
@@ -19,7 +20,7 @@
       {{!-- 名稱 --}}
       <div class="d-flex justify-content-start align-items-center">
         <div>
-          {{!-- 圖示not finished --}}
+          <i class="fa-solid {{this.icon}}"></i>
         </div>
         <div class="px-3 ">
           <h5>{{this.name}}</h5>

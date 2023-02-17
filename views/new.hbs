@@ -21,7 +21,7 @@
                 <label for="category" class="fw-bold">類別*</label>
             </div>
             <div class="col-6">
-                <select type="text" class="form-control" id="category" placeholder="Select" list="categoryOptions" name="categoryId" required />
+                <select class="form-control" name="categoryId" required />
                   {{#each categories}}
                   <option value="{{this._id}}">
                     {{this.categoryName}}

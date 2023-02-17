@@ -7,9 +7,9 @@ const db = require("../../config/mongoose");
 const User = require("../user");
 const Category = require('../category')
 const SEED_USER = {
-  name: "root",
-  email: "root@example.com",
-  password: "12345678",
+  name: "test",
+  email: "test@test.com",
+  password: "test",
 };
 const SEED_RECORD = [
   {
@@ -57,8 +57,8 @@ db.once("open", async () => {
     return {
       ...prev,
       [curr.category]: curr._id,
-    };
-  }, {}); 
+    }
+  }, {})
   
   const user = await bcrypt
     .genSalt(10)
@@ -70,19 +70,17 @@ db.once("open", async () => {
         password: hash,
       })
     ); 
-    Promise.all(
-      SEED_RECORD.map((record) => {
-        return Record.create({
-          name: record.name,
-          date: record.date,
-          amount: record.amount,
-          userId: user._id,
-          categoryId: categoryIdMapping[record.category],
+    Promise.all(SEED_RECORD.map((record) => {
+      return Record.create({
+        name: record.name,
+        date: record.date,
+        amount: record.amount,
+        userId: user._id,
+        categoryId: categoryIdMapping[record.category],
         });
-      })
-    )
+    }))
     .then(() => {
-      console.log("recordSeeder done.");
+      console.log("recordSeeder done.")
       db.close()
     })
     .catch(console.error)

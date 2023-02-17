@@ -24,26 +24,38 @@ router.post("/", (req, res) => {
 });
 
 //編輯資料
-router.get("/:id/edit", (req, res) => {
-  const userId = req.user._id;
-  const _id = req.params.id;
-  Promise.all([
-    Category.find().lean().sort({ _id: "asc" }),
-    Record.findOne({ _id, userId }).lean().sort({ date: "desc" }),
-  ])
-    .then((results) => {
-      return res.render("edit", { record: results[1], categories: results[0] });
-    })
-    .catch((error) => console.log(error));
+router.get("/:id/edit", async (req, res) => {
+  try {
+    const _id = req.params.id
+    const userId = req.user._id
+    const record = await Record.findOne({ _id, userId }).lean()
+    const category = await Category.findOne({ _id: record.categoryId })
+    record.categoryName = category.categoryName
+    record.date = record.date.toISOString().slice(0, 10)
+    res.render('edit', { record })
+  }
+  catch (error) {
+    console.log(error)
+  }
 });
 
 //接住資料送往資料庫
-router.put("/:id", (req, res) => {
-  const userId = req.user._id;
-  const _id = req.params.id;
-  Record.findByIdAndUpdate({ _id, userId }, req.body)
-    .then(() => res.redirect(`/`))
-    .catch((err) => console.log(err));
+router.put("/:id", async (req, res) => {
+  try {
+    const _id = req.params.id;
+    const userId = req.user._id;
+    const categoryItem = await Category.findOne({ categoryName: req.body.category });
+    const record = await Record.findOne({ _id, userId });
+    record.name = req.body.name;
+    record.date = req.body.date;
+    record.amount = req.body.amount;
+    record.categoryId = categoryItem._id;
+    record.save();
+    res.redirect("/");
+  }
+  catch (error) {
+    console.log(error)
+  }
 });
 
 //刪除

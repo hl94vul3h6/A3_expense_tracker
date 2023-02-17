@@ -1,7 +1,7 @@
-<form action="/search" method="GET">
-  <select type="submit" class=" form-select" id="categorySearch" name="categoryId" onchange="this.form.submit()">
+<form action="/" method="GET">
+  <select class="form-control" name="currentCategoryId" onchange="this.form.submit()">
     {{#if currentCategoryName}}<option>{{currentCategoryName}}</option>{{/if}}
-    <option value="">類別</option>
+    <option value="">全部</option>
     {{#each categories}}
     <option value="{{this._id}}">
       {{this.categoryName}}
@@ -10,7 +10,7 @@
   </select>
 </form>
 <div class="text-center">
-  <h1>總金額:</h1>
+  <h1>總金額:{{totalAmount}}</h1>
 </div>
 <ul class="list-group">
   {{#each records}}
